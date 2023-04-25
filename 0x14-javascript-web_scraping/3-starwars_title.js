@@ -1,11 +1,16 @@
 #!/usr/bin/node
-/* 3. Print title of SW movie with given arg. */
 
 const request = require('request');
-const id = process.argv[2];
+const episodeNum = process.argv[2];
+const API_URL = 'https://swapi-api.hbtn.io/api/films/';
 
-const url = 'http://swapi.co/api/films/' + id;
-request.get(url, (error, response, body) => {
-  if (error) throw error;
-  console.log(JSON.parse(body).title);
+request(API_URL + episodeNum, function (err, response, body) {
+  if (err) {
+    console.log(err);
+  } else if (response.statusCode === 200) {
+    const responseJSON = JSON.parse(body);
+    console.log(responseJSON.title);
+  } else {
+    console.log('Error code: ' + response.statusCode);
+  }
 });
